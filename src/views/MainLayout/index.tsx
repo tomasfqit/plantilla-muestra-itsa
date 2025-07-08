@@ -16,6 +16,8 @@ import {
     Bell,
     User,
 } from "lucide-react"
+import Dashboard from "../Dashboard"
+import Usuarios from "../Usuarios"
 
 const menuItems = [
     { icon: Home, label: "Dashboard", href: "#" },
@@ -31,14 +33,26 @@ const menuItems = [
 
 // Elementos adicionales para demostrar el scroll
 const additionalItems = [
-    { icon: Bell, label: "Notificaciones", href: "#" },
+    { icon: Bell, label: "tabla1", href: "#" },
     { icon: User, label: "Perfil", href: "#" },
     { icon: FileText, label: "Archivos", href: "#" },
     { icon: BarChart, label: "Analytics", href: "#" },
     { icon: Mail, label: "Correos", href: "#" },
     { icon: Calendar, label: "Eventos", href: "#" },
     { icon: Folder, label: "Carpetas", href: "#" },
-    { icon: Search, label: "Explorar", href: "#" },
+    { icon: Search, label: "Explorar 1", href: "#" },
+    { icon: Search, label: "Explorar 2", href: "#" },
+    { icon: Search, label: "Explorar 3", href: "#" },
+    { icon: Search, label: "Explorar 4", href: "#" },
+    { icon: Search, label: "Explorar 5", href: "#" },
+    { icon: Search, label: "Explorar 6", href: "#" },
+    { icon: Search, label: "Explorar 7", href: "#" },
+    { icon: Search, label: "Explorar 8", href: "#" },
+    { icon: Search, label: "Explorar 9", href: "#" },
+    { icon: Search, label: "Explorar 10", href: "#" },
+    { icon: Search, label: "Explorar 11", href: "#" },
+    { icon: Search, label: "Explorar 12", href: "#" },
+
 ]
 
 export default function SidebarLayout() {
@@ -133,72 +147,12 @@ export default function SidebarLayout() {
                         </div>
                     </div>
                 </header>
-
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-6">
-                    <div className="max-w-7xl mx-auto">
-                        {/* Content Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Estadística 1</h3>
-                                <p className="text-3xl font-bold text-blue-600">1,234</p>
-                                <p className="text-sm text-gray-500">+12% desde el mes pasado</p>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Estadística 2</h3>
-                                <p className="text-3xl font-bold text-green-600">5,678</p>
-                                <p className="text-sm text-gray-500">+8% desde el mes pasado</p>
-                            </div>
-
-                            <div className="bg-white rounded-lg shadow p-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">Estadística 3</h3>
-                                <p className="text-3xl font-bold text-purple-600">9,012</p>
-                                <p className="text-sm text-gray-500">+15% desde el mes pasado</p>
-                            </div>
-                        </div>
-
-                        {/* Content Area */}
-                        <div className="bg-white rounded-lg shadow">
-                            <div className="p-6">
-                                <h2 className="text-xl font-semibold text-gray-800 mb-4">Contenido de {activeItem}</h2>
-                                <div className="space-y-4">
-                                    <p className="text-gray-600">
-                                        Este es el contenido principal de la sección {activeItem}. El sidebar se puede abrir y cerrar usando
-                                        el botón en el header.
-                                    </p>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="p-4 bg-gray-50 rounded-lg">
-                                            <h4 className="font-medium text-gray-800 mb-2">Característica 1</h4>
-                                            <p className="text-sm text-gray-600">
-                                                El sidebar tiene un ancho fijo y se colapsa completamente cuando se cierra.
-                                            </p>
-                                        </div>
-
-                                        <div className="p-4 bg-gray-50 rounded-lg">
-                                            <h4 className="font-medium text-gray-800 mb-2">Característica 2</h4>
-                                            <p className="text-sm text-gray-600">
-                                                El menú tiene scroll automático cuando hay muchos elementos.
-                                            </p>
-                                        </div>
-
-                                        <div className="p-4 bg-gray-50 rounded-lg">
-                                            <h4 className="font-medium text-gray-800 mb-2">Característica 3</h4>
-                                            <p className="text-sm text-gray-600">
-                                                El contenido principal se ajusta automáticamente al ancho disponible.
-                                            </p>
-                                        </div>
-
-                                        <div className="p-4 bg-gray-50 rounded-lg">
-                                            <h4 className="font-medium text-gray-800 mb-2">Característica 4</h4>
-                                            <p className="text-sm text-gray-600">Transiciones suaves al abrir y cerrar el sidebar.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <main className="flex-1 bg-gray-200 overflow-y-auto p-2">
+                
+                   {activeItem === "Dashboard" && <Dashboard />}
+                   {activeItem === "Usuarios" && <Usuarios />}
+                   
                 </main>
             </div>
         </div>
