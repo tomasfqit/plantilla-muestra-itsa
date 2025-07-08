@@ -113,7 +113,8 @@ export default function Usuarios() {
 
 
     return (
-        <div className="flex flex-col gap-4 w-full h-full bg-white rounded-md shadow p-4">
+        <div className="flex flex-col gap-4 w-full h-full flex-1 bg-white rounded-md shadow p-4 overflow-auto">
+
             {/* Filtro Global */}
 
             {/* Filtros */}
@@ -204,14 +205,13 @@ export default function Usuarios() {
 
 
             {/* Tabla */}
-            <div className="ag-theme-alpine w-full h-2/3">
-                
+            <div className="ag-theme-alpine w-full flex-1 min-h-[300px] sm:min-h-0">
                 <AgGridReact<CarData>
                     ref={gridRef}
                     rowData={filteredData}
                     columnDefs={colDefs}
                     defaultColDef={defaultColDef}
-                    quickFilterText={globalFilter}  
+                    quickFilterText={globalFilter}
                 />
             </div>
         </div>
