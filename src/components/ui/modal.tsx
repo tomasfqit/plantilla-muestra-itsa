@@ -11,6 +11,7 @@ interface ModalProps {
     title?: string;
     subtitle?: string;
     children: React.ReactNode;
+    childrenSidebar?: React.ReactNode;
     showCloseButton?: boolean;
     className?: string;
 }
@@ -35,9 +36,9 @@ interface ModalFooterProps {
 
 export function ModalHeader({ title, subtitle, showCloseButton = true, onClose, children }: ModalHeaderProps) {
     if (!title && !subtitle && !showCloseButton && !children) return null;
-    
+
     return (
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex flex-row items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 ">
             {(title || subtitle) && (
                 <div>
                     {title && <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>}
@@ -71,12 +72,26 @@ export function ModalFooter({ children, className = "" }: ModalFooterProps) {
     )
 }
 
-export function Modal({ 
-    isOpen, 
-    onClose, 
-    title, 
-    subtitle, 
-    children, 
+interface ModalSidebarProps {
+    children: React.ReactNode;
+    className?: string;
+}
+
+export function ModalSidebar({ children, className = "" }: ModalSidebarProps) {
+    return (
+        <div className={`bg-gray-200 w-[150px] flex flex-col gap-2 items-center pt-5 p-2 ${className}`}>
+            {children}
+        </div>
+    )
+}
+
+export function Modal({
+    isOpen,
+    onClose,
+    title,
+    subtitle,
+    children,
+    childrenSidebar,
     showCloseButton = true,
     className = ""
 }: ModalProps) {
@@ -118,27 +133,27 @@ export function Modal({
         <>
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                className={`flex flex-row fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"} `}
                 onClick={onClose}
                 tabIndex={0}
             />
 
-            {/* Modal */}
             <div
-                className={`fixed inset-y-0 right-0 z-50 flex transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
-            >
-                <div className={`w-screen max-w-full sm:max-w-/3 lg:max-w-/3 xl:max-w-[80vw] bg-white dark:bg-gray-900 shadow-xl flex flex-col h-full ${className}`}>
-                    {/* Header */}
-                    <ModalHeader 
-                        title={title}
-                        subtitle={subtitle}
-                        showCloseButton={showCloseButton}
-                        onClose={onClose}
-                    />
-
-                    {/* Content Area */}
+                className={`fixed inset-y-0 right-0 z-50 flex transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
+                <div className={`w-screen max-w-full sm:max-w-/3 lg:max-w-/3 xl:max-w-[80vw] bg-white dark:bg-gray-900 shadow-xl flex flex-row h-full ${className} bg-red-500`}>
+                   <ModalSidebar>
+                    {childrenSidebar}
+                   </ModalSidebar>
                     <div className="flex-1 flex flex-col min-h-0">
-                        {children}
+                        <ModalHeader
+                            title={title}
+                            subtitle={subtitle}
+                            showCloseButton={showCloseButton}
+                            onClose={onClose}
+                        />
+                        <div className="flex-1 flex flex-col min-h-0">
+                            {children}
+                        </div>
                     </div>
                 </div>
             </div>
