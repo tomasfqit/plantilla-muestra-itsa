@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import Dashboard from "../Dashboard"
 import Usuarios from "../Usuarios"
+import FiltrosModal from "../filtros-modal"
 
 const menuItems = [
     { icon: Home, label: "Dashboard", href: "#" },
@@ -152,6 +153,7 @@ export default function MainLayout() {
                 
                    {activeItem === "Dashboard" && <Dashboard />}
                    {activeItem === "Vehiculos" && <Usuarios />}
+                   {activeItem === "Documentos" && <FiltrosModal />}
                    
                 </main>
             </div>
