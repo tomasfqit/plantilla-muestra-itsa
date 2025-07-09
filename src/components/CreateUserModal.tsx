@@ -6,6 +6,8 @@ import { Modal, ModalContent, ModalFooter, ModalSidebar } from "@/components/ui/
 import { Car, Plus, Wrench } from "lucide-react"
 import { Repuestos } from "@/views/Repuestos"
 import { Accesorios } from "@/views/Accesorios"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { accesoriosData, repuestosData, type Accesorio, type Repuesto } from "@/constants"
 
 interface CarData {
     make: string;
@@ -233,6 +235,45 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                             placeholder="Ej. 4"
                                         />
                                     </div>
+
+                                    {/* Repuestos */}
+                                    <div className="flex w-full sm:col-span-2">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
+                                                    <Wrench className="size-6" />
+                                                    <span className="text-sm">Repuestos</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                {repuestosData.map((repuesto: Repuesto) => (
+                                                    <DropdownMenuItem key={repuesto.id}>
+                                                        {repuesto.nombre}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+
+                                    <div className="flex w-full sm:col-span-2">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
+                                                    <Car className="size-6" />
+                                                    <span className="text-sm">Accesorios</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                {accesoriosData.map((accesorio: Accesorio) => (
+                                                    <DropdownMenuItem key={accesorio.id}>
+                                                        {accesorio.nombre}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+
+
 
                                     {/* Descripción */}
                                     <div className="flex flex-col sm:col-span-2">
