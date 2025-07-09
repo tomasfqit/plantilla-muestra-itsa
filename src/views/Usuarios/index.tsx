@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import EditUserModal from "@/components/EditUserModal";
-import CreateUserModal from "@/components/CreateUserModal";
+import { CreateUserModal } from "@/components/CreateUserModal";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface CarData {
@@ -24,7 +24,7 @@ interface CarData {
 export default function Usuarios() {
     // Referencia al grid para acceder a la API
     const gridRef = useRef<AgGridReact>(null);
-    
+
     // Filtro global
     const [globalFilter, setGlobalFilter] = useState('');
 
@@ -32,8 +32,8 @@ export default function Usuarios() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingData, setEditingData] = useState<CarData | null>(null);
 
-    // Estado para el modal de creación
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    // // Estado para el modal de creación
+    // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // Estado para paginación
     const [paginationPageSize, setPaginationPageSize] = useState(10);
@@ -54,7 +54,7 @@ export default function Usuarios() {
         { make: "Nissan 6", model: "Juke", price: 20675 },
         { make: "Nissan 7", model: "Juke", price: 20675 },
         { make: "Nissan 8", model: "Juke", price: 20675 },
-        { make: "Nissan 9", model: "Juke", price: 20675 },   
+        { make: "Nissan 9", model: "Juke", price: 20675 },
         { make: "Nissan 10", model: "Juke", price: 20675 },
         { make: "Nissan 11", model: "Juke", price: 20675 },
         { make: "Nissan 12", model: "Juke", price: 20675 },
@@ -72,7 +72,7 @@ export default function Usuarios() {
         return rowData.filter(car => {
             const makeMatch = car.make.toLowerCase().includes(filters.make.toLowerCase());
             const modelMatch = car.model.toLowerCase().includes(filters.model.toLowerCase());
-            
+
             let priceMatch = true;
             if (filters.priceRange) {
                 const [min, max] = filters.priceRange.split('-').map(Number);
@@ -92,7 +92,8 @@ export default function Usuarios() {
         { field: "make", headerName: "Marca", sortable: true, filter: true },
         { field: "model", headerName: "Nombre y Apellido / Razón Social", sortable: true, filter: true },
         { field: "price", headerName: "Precio", sortable: true, filter: true },
-        { field: "actions", headerName: "Acciones",
+        {
+            field: "actions", headerName: "Acciones",
             maxWidth: 90,
             cellRenderer: (params: ICellRendererParams<CarData>) => {
                 return <DropdownMenu>
@@ -101,15 +102,15 @@ export default function Usuarios() {
                             <EllipsisVertical />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>   
+                    <DropdownMenuContent>
                         <DropdownMenuItem onClick={() => handleEdit(params.data!)}>
                             Editar
                         </DropdownMenuItem>
                         <DropdownMenuItem>Eliminar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            }   
-         }
+            }
+        }
     ]);
 
     const defaultColDef = {
@@ -124,7 +125,7 @@ export default function Usuarios() {
     const onGlobalFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setGlobalFilter(value);
-        
+
         if (gridRef.current) {
             gridRef.current.api.setFilterModel({
                 quickFilter: {
@@ -151,12 +152,12 @@ export default function Usuarios() {
 
     // Función para guardar los cambios
     const handleSaveEdit = (updatedData: CarData) => {
-        setRowData(prevData => 
-            prevData.map(item => 
-                item.make === editingData?.make && 
-                item.model === editingData?.model && 
-                item.price === editingData?.price 
-                    ? updatedData 
+        setRowData(prevData =>
+            prevData.map(item =>
+                item.make === editingData?.make &&
+                    item.model === editingData?.model &&
+                    item.price === editingData?.price
+                    ? updatedData
                     : item
             )
         );
@@ -190,7 +191,7 @@ export default function Usuarios() {
     const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newPageSize = Number(event.target.value);
         setPaginationPageSize(newPageSize);
-        
+
         if (gridRef.current) {
             //gridRef.current.api.paginationSetPageSize(newPageSize);
         }
@@ -244,16 +245,17 @@ export default function Usuarios() {
                         </select>
                     </div>
 
-                   
+
 
                     {/* Botón Limpiar - ocupa toda la fila en móviles */}
-                    <div className="flex flex-col justify-end">
-                        <button
+                    <div className="flex flex-col justify-end pb-1">
+                        <Button
                             onClick={handleClearFilters}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                            variant="outline"
+                            className="border border-gray-400 bg-white"
                         >
                             Limpiar filtros
-                        </button>
+                        </Button>
                     </div>
 
                 </div>
@@ -269,16 +271,11 @@ export default function Usuarios() {
                         />
                     </div>
                     <div className="flex justify-end">
-                        <button 
-                            onClick={handleCreateNew}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-                        >
-                            Nuevo vehículo
-                        </button>
+                        <CreateUserModal onSave={handleSaveCreate} />
                     </div>
                 </div>
             </div>
-          
+
             {/* Tabla */}
             <div className="ag-theme-alpine w-full flex-1 min-h-[300px]">
                 <AgGridReact<CarData>
@@ -304,11 +301,7 @@ export default function Usuarios() {
             />
 
             {/* Modal de Creación */}
-            <CreateUserModal
-                isOpen={isCreateModalOpen}
-                onClose={handleCloseCreateModal}
-                onSave={handleSaveCreate}
-            />
+
         </div>
     );
 };
