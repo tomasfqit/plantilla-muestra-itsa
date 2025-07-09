@@ -229,3 +229,29 @@ export const accesoriosData: Accesorio[] = [
     categoria: "Interior",
   },
 ];
+
+
+export interface Notificacion {
+  id: number;
+  titulo: string;
+  descripcion: string;
+  fecha: string;
+  leido: boolean;
+}
+
+export const notificacionesData: Notificacion[] = [
+  {
+    id: 1,
+    titulo: "Notificación de Repuestos",
+    descripcion: "Se ha agregado un nuevo repuesto a la lista de repuestos",
+    fecha: "2025-01-01",
+    leido: false,
+  },
+  {
+    id: 2,
+    titulo: "Notificación de Accesorios",
+    descripcion: "Se ha agregado un nuevo accesorio a la lista de accesorios",
+    fecha: "2025-01-01", 
+    leido: false,
+  },
+];

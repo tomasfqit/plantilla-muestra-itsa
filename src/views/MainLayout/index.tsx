@@ -15,10 +15,15 @@ import {
     Bell,
     User,
     Car,
+    MapPin,
+    ChevronDown,
 } from "lucide-react"
 import Dashboard from "../Dashboard"
 import Usuarios from "../Usuarios"
 import FiltrosModal from "../filtros-modal"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { notificacionesData, type Notificacion } from "@/constants"
+import { Button } from "@/components/ui/button"
 
 const menuItems = [
     { icon: Home, label: "Dashboard", href: "#" },
@@ -59,7 +64,7 @@ const additionalItems = [
 export default function MainLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [activeItem, setActiveItem] = useState("Dashboard")
-
+    const [currentLocation, setCurrentLocation] = useState("Cuenca")
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen)
     }
@@ -133,18 +138,58 @@ export default function MainLayout() {
                             <h1 className="ml-4 text-xl font-semibold text-gray-800">{activeItem}</h1>
                         </div>
 
+                        <div className="flex items-center">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" className="flex items-center gap-2 p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                        <MapPin className="w-5 h-5" />
+                                        {`Agencia - ${currentLocation}`}
+                                        <ChevronDown className="w-5 h-5" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>
+                                        <span className="text-sm" onClick={() => setCurrentLocation("Cuenca")}>Cuenca</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <span className="text-sm" onClick={() => setCurrentLocation("Quito")}>Quito</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+
                         {/* Header Actions */}
                         <div className="flex items-center space-x-4">
-                            <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
-                                <Search className="w-5 h-5" />
-                            </button>
-                            <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 relative">
-                                <Bell className="w-5 h-5" />
-                                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                            </button>
-                            <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
-                                <User className="w-5 h-5" />
-                            </button>
+
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                        <Bell className="w-5 h-5" />
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    {notificacionesData.map((notificacion: Notificacion) => (
+                                        <DropdownMenuItem key={notificacion.id}>
+                                            {notificacion.titulo}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                        <User className="w-5 h-5" />
+                                    </button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>
+                                        <span className="text-sm">Configuración</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <span className="text-sm">Cerrar sesión</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </div>
                 </header>
