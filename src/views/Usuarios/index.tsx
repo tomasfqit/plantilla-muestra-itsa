@@ -1,15 +1,22 @@
 'use client';
 import React, { useState, useMemo, useRef } from "react";
-import { AllCommunityModule, ModuleRegistry, type ColDef } from "ag-grid-community";
+import { AllCommunityModule, ModuleRegistry, type ICellRendererParams, type ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-
+import { Button } from "@/components/ui/button";
+import { EllipsisVertical } from "lucide-react";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface CarData {
     make: string;
     model: string;
     price: number;
-    electric: boolean;
+    actions?: React.ReactNode;
 }
 
 export default function Usuarios() {
@@ -21,24 +28,24 @@ export default function Usuarios() {
 
     // Row Data: The data to be displayed.
     const [rowData] = useState<CarData[]>([
-        { make: "Tesla", model: "Model Y", price: 64950, electric: true },
-        { make: "Ford", model: "F-Series", price: 33850, electric: false },
-        { make: "Toyota", model: "Corolla", price: 29600, electric: false },
-        { make: "Mercedes", model: "EQA", price: 48890, electric: true },
-        { make: "Fiat", model: "500", price: 15774, electric: false },
-        { make: "Nissan", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 2", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 3", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 4", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 5", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 6", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 7", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 8", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 9", model: "Juke", price: 20675, electric: false },   
-        { make: "Nissan 10", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 11", model: "Juke", price: 20675, electric: false },
-        { make: "Nissan 12", model: "Juke", price: 20675, electric: false },
+        { make: "Tesla", model: "Model Y", price: 64950 },
+        { make: "Ford", model: "F-Series", price: 33850 },
+        { make: "Toyota", model: "Corolla", price: 29600 },
+        { make: "Mercedes", model: "EQA", price: 48890 },
+        { make: "Fiat", model: "500", price: 15774 },
+        { make: "Nissan", model: "Juke", price: 20675 },
+        { make: "Nissan", model: "Juke", price: 20675 },
+        { make: "Nissan 2", model: "Juke", price: 20675 },
+        { make: "Nissan 3", model: "Juke", price: 20675 },
+        { make: "Nissan 4", model: "Juke", price: 20675 },
+        { make: "Nissan 5", model: "Juke", price: 20675 },
+        { make: "Nissan 6", model: "Juke", price: 20675 },
+        { make: "Nissan 7", model: "Juke", price: 20675 },
+        { make: "Nissan 8", model: "Juke", price: 20675 },
+        { make: "Nissan 9", model: "Juke", price: 20675 },   
+        { make: "Nissan 10", model: "Juke", price: 20675 },
+        { make: "Nissan 11", model: "Juke", price: 20675 },
+        { make: "Nissan 12", model: "Juke", price: 20675 },
     ]);
 
     // Filtros
@@ -46,7 +53,6 @@ export default function Usuarios() {
         make: "",
         model: "",
         priceRange: "",
-        electric: "all"
     });
 
     // Datos filtrados
@@ -54,9 +60,6 @@ export default function Usuarios() {
         return rowData.filter(car => {
             const makeMatch = car.make.toLowerCase().includes(filters.make.toLowerCase());
             const modelMatch = car.model.toLowerCase().includes(filters.model.toLowerCase());
-            const electricMatch = filters.electric === "all" || 
-                (filters.electric === "true" && car.electric) || 
-                (filters.electric === "false" && !car.electric);
             
             let priceMatch = true;
             if (filters.priceRange) {
@@ -68,7 +71,7 @@ export default function Usuarios() {
                 }
             }
 
-            return makeMatch && modelMatch && electricMatch && priceMatch;
+            return makeMatch && modelMatch && priceMatch;
         });
     }, [rowData, filters]);
 
@@ -77,7 +80,22 @@ export default function Usuarios() {
         { field: "make", headerName: "Marca", sortable: true, filter: true },
         { field: "model", headerName: "Modelo", sortable: true, filter: true },
         { field: "price", headerName: "Precio", sortable: true, filter: true },
-        { field: "electric", headerName: "Eléctrico" }
+        { field: "actions", headerName: "Acciones",
+            maxWidth: 90,
+            cellRenderer: (params: ICellRendererParams<CarData>) => {
+                return <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="secondary" size="icon" className="size-8" onClick={() => console.log('Edit:', params.data)}>
+                            <EllipsisVertical />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>   
+                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            }   
+         }
     ]);
 
     const defaultColDef = {
@@ -108,7 +126,6 @@ export default function Usuarios() {
             make: "",
             model: "",
             priceRange: "",
-            electric: "all"
         });
     };
 
@@ -161,19 +178,7 @@ export default function Usuarios() {
                         </select>
                     </div>
 
-                    {/* Tipo */}
-                    <div className="flex flex-col">
-                        <label className="text-sm font-medium text-gray-700 mb-1">Tipo</label>
-                        <select
-                            value={filters.electric}
-                            onChange={(e) => handleFilterChange('electric', e.target.value)}
-                            className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="all">Todos</option>
-                            <option value="true">Eléctricos</option>
-                            <option value="false">No eléctricos</option>
-                        </select>
-                    </div>
+                   
 
                     {/* Botón Limpiar - ocupa toda la fila en móviles */}
                     <div className="flex flex-col justify-end">
