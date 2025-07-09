@@ -47,7 +47,7 @@ export default function Usuarios() {
         { make: "Fiat", model: "500", price: 15774 },
         { make: "Nissan", model: "Juke", price: 20675 },
         { make: "Nissan", model: "Juke", price: 20675 },
-        { make: "Nissan 2", model: "Juke", price: 20675 },
+        { make: "Nissan 2", model: "Juke", price: 30358 },
         { make: "Nissan 3", model: "Juke", price: 20675 },
         { make: "Nissan 4", model: "Juke", price: 20675 },
         { make: "Nissan 5", model: "Juke", price: 20675 },
@@ -69,7 +69,7 @@ export default function Usuarios() {
 
     // Datos filtrados
     const filteredData = useMemo(() => {
-        return rowData.filter(car => {
+        const dataSinOrdenar = rowData.filter(car => {
             const makeMatch = car.make.toLowerCase().includes(filters.make.toLowerCase());
             const modelMatch = car.model.toLowerCase().includes(filters.model.toLowerCase());
 
@@ -85,6 +85,7 @@ export default function Usuarios() {
 
             return makeMatch && modelMatch && priceMatch;
         });
+        return dataSinOrdenar.sort((a, b) => a.make.localeCompare(b.make));
     }, [rowData, filters]);
 
     // Column Definitions: Defines & controls grid columns.

@@ -134,7 +134,6 @@ export default function MainLayout() {
                             >
                                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                             </button>
-
                             <h1 className="ml-4 text-xl font-semibold text-gray-800">{activeItem}</h1>
                         </div>
 
@@ -148,11 +147,11 @@ export default function MainLayout() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuItem>
-                                        <span className="text-sm" onClick={() => setCurrentLocation("Cuenca")}>Cuenca</span>
+                                    <DropdownMenuItem onClick={() => setCurrentLocation("Cuenca")}>
+                                        <span className="text-sm">Cuenca</span>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <span className="text-sm" onClick={() => setCurrentLocation("Quito")}>Quito</span>
+                                    <DropdownMenuItem onClick={() => setCurrentLocation("Quito")}>
+                                        <span className="text-sm">Quito</span>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

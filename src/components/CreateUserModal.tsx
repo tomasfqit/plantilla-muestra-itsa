@@ -28,7 +28,9 @@ interface CreateUserModalProps {
 }
 
 export function CreateUserModal({ onSave }: CreateUserModalProps) {
-    const [listaMostrarSidebar, setListaMostrarSidebar] = useState<"Nuevo Vehículo" | "Repuestos" | "Accesorios">("Nuevo Vehículo")
+    const [listaMostrarSidebar, setListaMostrarSidebar] = useState<"Nuevo Vehículo" | "Repuestos" | "Accesorios">("Nuevo Vehículo");
+    const [repuestoSeleccionado, setRepuestoSeleccionado] = useState<Repuesto | null>(null);
+    const [accesorioSeleccionado, setAccesorioSeleccionado] = useState<Accesorio | null>(null);
     const [isOpen, setIsOpen] = useState(false)
     const [formData, setFormData] = React.useState<CarData>({
         make: '',
@@ -242,12 +244,12 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
                                                     <Wrench className="size-6" />
-                                                    <span className="text-sm">Repuestos</span>
+                                                    <span className="text-sm">{repuestoSeleccionado ? repuestoSeleccionado.nombre : "Repuestos"}</span>
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
                                                 {repuestosData.map((repuesto: Repuesto) => (
-                                                    <DropdownMenuItem key={repuesto.id}>
+                                                    <DropdownMenuItem key={repuesto.id} onClick={() => setRepuestoSeleccionado(repuesto)}>
                                                         {repuesto.nombre}
                                                     </DropdownMenuItem>
                                                 ))}
@@ -260,12 +262,12 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
                                                     <Car className="size-6" />
-                                                    <span className="text-sm">Accesorios</span>
+                                                    <span className="text-sm">{accesorioSeleccionado ? accesorioSeleccionado.nombre : "Accesorios"}</span>
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
                                                 {accesoriosData.map((accesorio: Accesorio) => (
-                                                    <DropdownMenuItem key={accesorio.id}>
+                                                    <DropdownMenuItem key={accesorio.id} onClick={() => setAccesorioSeleccionado(accesorio)}>
                                                         {accesorio.nombre}
                                                     </DropdownMenuItem>
                                                 ))}
