@@ -55,7 +55,7 @@ const additionalItems = [
 
 ]
 
-export default function SidebarLayout() {
+export default function MainLayout() {
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [activeItem, setActiveItem] = useState("Dashboard")
 

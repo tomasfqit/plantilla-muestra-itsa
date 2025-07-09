@@ -35,6 +35,9 @@ export default function Usuarios() {
     // Estado para el modal de creación
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
+    // Estado para paginación
+    const [paginationPageSize, setPaginationPageSize] = useState(10);
+
     // Row Data: The data to be displayed.
     const [rowData, setRowData] = useState<CarData[]>([
         { make: "Tesla", model: "Model Y", price: 64950 },
@@ -183,6 +186,15 @@ export default function Usuarios() {
         setIsCreateModalOpen(false);
     };
 
+    // Función para cambiar el tamaño de página
+    const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newPageSize = Number(event.target.value);
+        setPaginationPageSize(newPageSize);
+        
+        if (gridRef.current) {
+            //gridRef.current.api.paginationSetPageSize(newPageSize);
+        }
+    };
 
     return (
         <div className="flex flex-col gap-4 w-full h-full flex-1 bg-white rounded-md shadow p-4 overflow-auto">
@@ -261,22 +273,48 @@ export default function Usuarios() {
                             onClick={handleCreateNew}
                             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                         >
-                            Nuevo usuario
+                            Nuevo vehículo
                         </button>
                     </div>
                 </div>
             </div>
           
-
+            {/* Controles de paginación */}
+            {/* <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700">Mostrar:</label>
+                    <select
+                        value={paginationPageSize}
+                        onChange={handlePageSizeChange}
+                        className="p-1 border border-gray-300 rounded text-sm"
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                    </select>
+                    <span className="text-sm text-gray-600">elementos por página</span>
+                </div>
+                
+                <div className="text-sm text-gray-600">
+                    Mostrando <span className="font-medium">{filteredData.length}</span> de <span className="font-medium">{rowData.length}</span> elementos
+                </div>
+            </div> */}
 
             {/* Tabla */}
-            <div className="ag-theme-alpine w-full flex-1 min-h-[300px] sm:min-h-0">
+            <div className="ag-theme-alpine w-full h-[calc(100vh-400px)] min-h-[400px]">
                 <AgGridReact<CarData>
                     ref={gridRef}
                     rowData={filteredData}
                     columnDefs={colDefs}
                     defaultColDef={defaultColDef}
                     quickFilterText={globalFilter}
+                    pagination={true}
+                    paginationPageSize={paginationPageSize}
+                    paginationPageSizeSelector={[5, 10, 20, 50, 100]}
+                    paginationAutoPageSize={false}
+                    domLayout="normal"
                 />
             </div>
 
