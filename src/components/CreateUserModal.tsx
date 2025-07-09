@@ -91,7 +91,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)} variant="default" className="bg-blue-500 text-white hover:bg-blue-600">
+            <Button onClick={() => setIsOpen(true)} variant="default" >
                 <Plus className="h-4 w-4 mr-2" />
                 Nuevo Vehículo
             </Button>

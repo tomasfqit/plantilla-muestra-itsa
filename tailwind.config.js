@@ -50,6 +50,9 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+        // Colores personalizados
+        "brand-red": "rgb(168, 65, 65)",
+        "brand-red-hex": "#a84141",
       },
       keyframes: {
         "slide-in-right": {

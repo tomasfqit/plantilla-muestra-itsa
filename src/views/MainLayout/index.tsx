@@ -79,10 +79,9 @@ export default function MainLayout() {
             >
                 <div className="flex flex-col h-full">
                     {/* Sidebar Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                        <h2 className="text-xl font-semibold text-gray-800">Mi App</h2>
+                    <div className="bg-brand-red flex items-center justify-between p-4 border-b border-gray-200 h-[69px]">
+                        <h2 className="text-xl font-semibold text-white">{sidebarOpen && "ITSA"}</h2>
                     </div>
-
                     {/* Menu Items with Scroll */}
                     <nav className="flex-1 overflow-y-auto py-4">
                         <ul className="space-y-1 px-3">
@@ -107,7 +106,7 @@ export default function MainLayout() {
                     </nav>
 
                     {/* Sidebar Footer */}
-                    <div className="p-4 border-t border-gray-200">
+                    {/* <div className="p-4 border-t border-gray-200">
                         <div className="flex items-center">
                             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                                 <User className="w-4 h-4 text-white" />
@@ -117,24 +116,24 @@ export default function MainLayout() {
                                 <p className="text-xs text-gray-500">usuario@email.com</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col">
                 {/* Header */}
-                <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+                <header className="bg-brand-red shadow-sm border-b border-gray-200 px-6 py-4 ">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             {/* Sidebar Toggle Button */}
                             <button
                                 onClick={toggleSidebar}
-                                className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
+                                className="p-2 rounded-lg text-white hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200"
                             >
                                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                             </button>
-                            <h1 className="ml-4 text-xl font-semibold text-gray-800">{activeItem}</h1>
+                            <h1 className="ml-4 text-xl font-semibold text-white">{activeItem}</h1>
                         </div>
 
                         <div className="flex items-center">
@@ -163,7 +162,7 @@ export default function MainLayout() {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
-                                        <Bell className="w-5 h-5" />
+                                        <Bell className="w-5 h-5" color="white" />
                                     </button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
@@ -177,7 +176,7 @@ export default function MainLayout() {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
-                                        <User className="w-5 h-5" />
+                                        <User className="w-5 h-5" color="white" />
                                     </button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
