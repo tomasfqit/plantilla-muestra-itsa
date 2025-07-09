@@ -38,6 +38,19 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
         price: 0
     });
 
+    // Estados para los filtros
+    const [filtroRepuestos, setFiltroRepuestos] = useState<string>("");
+    const [filtroAccesorios, setFiltroAccesorios] = useState<string>("");
+
+     // Filtrar datos según la categoría seleccionada
+    const repuestosFiltrados = filtroRepuestos 
+        ? repuestosData.filter(r => r.categoria === filtroRepuestos)
+        : repuestosData;
+
+    const accesoriosFiltrados = filtroAccesorios 
+        ? accesoriosData.filter(a => a.categoria === filtroAccesorios)
+        : accesoriosData;
+
     // Función para resetear completamente el formulario
     const resetForm = () => {
         setFormData({
@@ -46,6 +59,10 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
             price: 0
         });
         setListaMostrarSidebar("Nuevo Vehículo");
+        setRepuestoSeleccionado(null);
+        setAccesorioSeleccionado(null);
+        setFiltroRepuestos("");
+        setFiltroAccesorios("");
     };
 
     // Función para manejar el cierre del modal
@@ -238,8 +255,8 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                         />
                                     </div>
 
-                                    {/* Repuestos */}
-                                    <div className="flex w-full sm:col-span-2">
+                                    {/* Repuestos con Filtro */}
+                                    <div className="flex w-full sm:col-span-2 space-x-2">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
@@ -248,16 +265,20 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                {repuestosData.map((repuesto: Repuesto) => (
+                                                {repuestosFiltrados.map((repuesto: Repuesto) => (
                                                     <DropdownMenuItem key={repuesto.id} onClick={() => setRepuestoSeleccionado(repuesto)}>
-                                                        {repuesto.nombre}
+                                                        <div className="flex flex-col">
+                                                            <span className="font-medium">{repuesto.nombre}</span>
+                                                            <span className="text-xs text-gray-500">{repuesto.categoria} - ${repuesto.precio}</span>
+                                                        </div>
                                                     </DropdownMenuItem>
                                                 ))}
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
 
-                                    <div className="flex w-full sm:col-span-2">
+                                    {/* Accesorios con Filtro */}
+                                    <div className="flex w-full sm:col-span-2 space-x-2">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="secondary" className="flex flex-row w-full items-center justify-center">
@@ -266,16 +287,17 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                {accesoriosData.map((accesorio: Accesorio) => (
+                                                {accesoriosFiltrados.map((accesorio: Accesorio) => (
                                                     <DropdownMenuItem key={accesorio.id} onClick={() => setAccesorioSeleccionado(accesorio)}>
-                                                        {accesorio.nombre}
+                                                        <div className="flex flex-col">
+                                                            <span className="font-medium">{accesorio.nombre}</span>
+                                                            <span className="text-xs text-gray-500">{accesorio.categoria} - ${accesorio.precio}</span>
+                                                        </div>
                                                     </DropdownMenuItem>
                                                 ))}
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
-
-
 
                                     {/* Descripción */}
                                     <div className="flex flex-col sm:col-span-2">
