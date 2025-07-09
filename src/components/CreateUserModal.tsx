@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
-import { X, Plus, User } from "lucide-react"
+import { X, Plus } from "lucide-react"
 
 
 interface CarData {
@@ -21,7 +21,6 @@ interface CarData {
 }
 
 interface CreateUserModalProps {
-
     onSave: (newData: CarData) => void;
 }
 export function CreateUserModal({ onSave }: CreateUserModalProps) {
@@ -44,9 +43,25 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
         }
     }, [isOpen])
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && isOpen) {
+                handleClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen]);
+
     const handleClose = () => setIsOpen(false)
 
-    
+
 
     const [formData, setFormData] = React.useState<CarData>({
         make: '',
@@ -88,9 +103,9 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
         <>
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-                    }`}
+                className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
                 onClick={handleClose}
+                tabIndex={0}
             />
 
             {/* Modal */}
@@ -114,7 +129,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                     {/* Content */}
                     <div className="flex-1 overflow-y-auto p-6">
                         <form className="flex-1 overflow-y-auto px-6 space-y-4">
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div className="flex flex-col items-start">
                                     <label htmlFor="make" className="text-right">
                                         Marca
@@ -124,7 +139,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                         type="text"
                                         value={formData.make}
                                         onChange={(e) => handleInputChange('make', e.target.value)}
-                                        className="col-span-3 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                                         required
                                         placeholder="Ingrese la marca"
                                     />
@@ -139,7 +154,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                         type="text"
                                         value={formData.model}
                                         onChange={(e) => handleInputChange('model', e.target.value)}
-                                        className="col-span-3 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                                         required
                                         placeholder="Ingrese el modelo"
                                     />
@@ -154,7 +169,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                                         type="number"
                                         value={formData.price}
                                         onChange={(e) => handleInputChange('price', Number(e.target.value))}
-                                        className="col-span-3 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         required
                                         min="0"
                                         step="0.01"
@@ -278,16 +293,13 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
                     </div>
 
                     {/* Footer */}
-                    <div className="border-t border-gray-200 dark:border-gray-700 p-6">
-                        <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                                <User className="h-5 w-5 text-white" />
-                            </div>
-                            <div className="flex-1">
-                                <p className="font-medium text-gray-900 dark:text-white">Juan Pérez</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">juan@ejemplo.com</p>
-                            </div>
-                        </div>
+                    <div className="flex justify-end gap-2 border-t border-gray-200 dark:border-gray-700 p-6">
+                        <Button type="button" variant="outline" onClick={handleCancel}>
+                            Cancelar
+                        </Button>
+                        <Button type="submit" onClick={handleSubmit}>
+                            Crear
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -296,7 +308,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
     if (!mounted) return null
     return (
         <>
-            <Button  onClick={() => setIsOpen(true)} variant="default" className="bg-blue-500 text-white hover:bg-blue-600">
+            <Button onClick={() => setIsOpen(true)} variant="default" className="bg-blue-500 text-white hover:bg-blue-600">
                 <Plus className="h-4 w-4 mr-2" />
                 Nuevo Vehículo
             </Button>
