@@ -278,12 +278,12 @@ export default function Usuarios() {
                 />
             </div>
 
-            <EditVehiculoModal
+            {editingData && <EditVehiculoModal
                 isOpen={isEditModalOpen}
                 setIsOpen={setIsEditModalOpen}
                 onSave={handleSaveEdit}
                 data={editingData}
-            />
+            />}
 
             {/* Modal de Edición */}
             {/* <EditUserModal
