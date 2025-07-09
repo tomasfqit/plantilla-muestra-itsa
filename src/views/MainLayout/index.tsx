@@ -5,7 +5,6 @@ import {
     Menu,
     X,
     Home,
-    Users,
     Settings,
     FileText,
     BarChart,
@@ -15,13 +14,14 @@ import {
     Search,
     Bell,
     User,
+    Car,
 } from "lucide-react"
 import Dashboard from "../Dashboard"
 import Usuarios from "../Usuarios"
 
 const menuItems = [
     { icon: Home, label: "Dashboard", href: "#" },
-    { icon: Users, label: "Usuarios", href: "#" },
+    { icon: Car, label: "Vehiculos", href: "#" },
     { icon: FileText, label: "Documentos", href: "#" },
     { icon: BarChart, label: "Reportes", href: "#" },
     { icon: Mail, label: "Mensajes", href: "#" },
@@ -151,7 +151,7 @@ export default function SidebarLayout() {
                 <main className="flex-1 bg-gray-200 overflow-y-auto p-2">
                 
                    {activeItem === "Dashboard" && <Dashboard />}
-                   {activeItem === "Usuarios" && <Usuarios />}
+                   {activeItem === "Vehiculos" && <Usuarios />}
                    
                 </main>
             </div>
