@@ -296,28 +296,3 @@ export default function Usuarios() {
         </div>
     );
 };
-
-
-
-{/* Controles de paginación */ }
-{/* <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-gray-700">Mostrar:</label>
-                    <select
-                        value={paginationPageSize}
-                        onChange={handlePageSizeChange}
-                        className="p-1 border border-gray-300 rounded text-sm"
-                    >
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                    </select>
-                    <span className="text-sm text-gray-600">elementos por página</span>
-                </div>
-                
-                <div className="text-sm text-gray-600">
-                    Mostrando <span className="font-medium">{filteredData.length}</span> de <span className="font-medium">{rowData.length}</span> elementos
-                </div>
-            </div> */}
