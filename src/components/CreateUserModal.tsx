@@ -34,6 +34,22 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
         price: 0
     });
 
+    // Función para resetear completamente el formulario
+    const resetForm = () => {
+        setFormData({
+            make: '',
+            model: '',
+            price: 0
+        });
+        setListaMostrarSidebar("Nuevo Vehículo");
+    };
+
+    // Función para manejar el cierre del modal
+    const handleCloseModal = () => {
+        resetForm();
+        setIsOpen(false);
+    };
+
     const handleInputChange = (field: keyof CarData, value: string | number) => {
         setFormData(prev => ({
             ...prev,
@@ -45,23 +61,11 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
         e.preventDefault();
         console.log(formData);
         onSave(formData);
-        // Limpiar el formulario después de guardar
-        setFormData({
-            make: '',
-            model: '',
-            price: 0
-        });
-        setIsOpen(false);
+        handleCloseModal();
     };
 
     const handleCancel = () => {
-        // Limpiar el formulario al cancelar
-        setFormData({
-            make: '',
-            model: '',
-            price: 0
-        });
-        setIsOpen(false);
+        handleCloseModal();
     };
 
     return (
@@ -73,7 +77,7 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
 
             <Modal
                 isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
+                onClose={handleCloseModal}
                 title="Nuevo Vehículo"
                 subtitle="Crea un nuevo vehículo"
                 childrenSidebar={

@@ -36,7 +36,7 @@ export default function Usuarios() {
     // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // Estado para paginación
-    const [paginationPageSize, setPaginationPageSize] = useState(10);
+    const [paginationPageSize] = useState(10);
 
     // Row Data: The data to be displayed.
     const [rowData, setRowData] = useState<CarData[]>([
@@ -178,15 +178,7 @@ export default function Usuarios() {
     };
 
 
-    // Función para cambiar el tamaño de página
-    const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newPageSize = Number(event.target.value);
-        setPaginationPageSize(newPageSize);
 
-        if (gridRef.current) {
-            //gridRef.current.api.paginationSetPageSize(newPageSize);
-        }
-    };
 
     return (
         <div className="flex flex-col gap-4 w-full h-full flex-1 bg-white rounded-md shadow p-4 overflow-auto">
