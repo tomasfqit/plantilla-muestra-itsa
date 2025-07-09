@@ -79,8 +79,8 @@ export default function MainLayout() {
             >
                 <div className="flex flex-col h-full">
                     {/* Sidebar Header */}
-                    <div className="bg-brand-red flex items-center justify-between p-4 border-b border-gray-200 h-[69px]">
-                        <h2 className="text-xl font-semibold text-white">{sidebarOpen && "ITSA"}</h2>
+                    <div className="bg-black flex items-center justify-between p-4 border-b border-gray-200 h-[69px]">
+                        <h2 className=" text-xl font-semibold text-white ">{sidebarOpen && "ITSA"}</h2>
                     </div>
                     {/* Menu Items with Scroll */}
                     <nav className="flex-1 overflow-y-auto py-4">

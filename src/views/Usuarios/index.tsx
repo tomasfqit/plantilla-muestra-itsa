@@ -10,8 +10,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import EditUserModal from "@/components/EditUserModal";
+// import EditUserModal from "@/components/EditUserModal";
 import { CreateUserModal } from "@/components/CreateUserModal";
+import { EditVehiculoModal } from "@/components/EditVehiculoModal";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface CarData {
@@ -147,6 +148,7 @@ export default function Usuarios() {
 
     // Función para abrir el modal de edición
     const handleEdit = (data: CarData) => {
+        console.log('data a1=>',data);
         setEditingData(data);
         setIsEditModalOpen(true);
     };
@@ -276,13 +278,20 @@ export default function Usuarios() {
                 />
             </div>
 
+            <EditVehiculoModal
+                isOpen={isEditModalOpen}
+                setIsOpen={setIsEditModalOpen}
+                onSave={handleSaveEdit}
+                data={editingData}
+            />
+
             {/* Modal de Edición */}
-            <EditUserModal
+            {/* <EditUserModal
                 isOpen={isEditModalOpen}
                 onClose={handleCloseEditModal}
                 data={editingData}
                 onSave={handleSaveEdit}
-            />
+            /> */}
 
             {/* Modal de Creación */}
 
