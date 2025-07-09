@@ -76,7 +76,8 @@ export default function Usuarios() {
     const [colDefs] = useState<ColDef<CarData>[]>([
         { field: "make", headerName: "Marca", sortable: true, filter: true },
         { field: "model", headerName: "Modelo", sortable: true, filter: true },
-        { field: "price", headerName: "Precio", sortable: true, filter: true }
+        { field: "price", headerName: "Precio", sortable: true, filter: true },
+        { field: "electric", headerName: "Eléctrico" }
     ]);
 
     const defaultColDef = {
@@ -118,7 +119,7 @@ export default function Usuarios() {
             {/* Filtro Global */}
 
             {/* Filtros */}
-            <div className="flex flex-col gap-4 bg-gray-50">
+            <div className="flex flex-col gap-4 bg-gray-200 rounded-lg">
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 p-2 rounded-lg">
                     {/* Marca */}
                     <div className="flex flex-col">
