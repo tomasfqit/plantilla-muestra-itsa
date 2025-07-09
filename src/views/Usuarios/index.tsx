@@ -10,6 +10,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import EditUserModal from "@/components/EditUserModal";
+import CreateUserModal from "@/components/CreateUserModal";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface CarData {
@@ -26,8 +28,15 @@ export default function Usuarios() {
     // Filtro global
     const [globalFilter, setGlobalFilter] = useState('');
 
+    // Estado para el modal de edición
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingData, setEditingData] = useState<CarData | null>(null);
+
+    // Estado para el modal de creación
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
     // Row Data: The data to be displayed.
-    const [rowData] = useState<CarData[]>([
+    const [rowData, setRowData] = useState<CarData[]>([
         { make: "Tesla", model: "Model Y", price: 64950 },
         { make: "Ford", model: "F-Series", price: 33850 },
         { make: "Toyota", model: "Corolla", price: 29600 },
@@ -85,12 +94,14 @@ export default function Usuarios() {
             cellRenderer: (params: ICellRendererParams<CarData>) => {
                 return <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="secondary" size="icon" className="size-8" onClick={() => console.log('Edit:', params.data)}>
+                        <Button variant="secondary" size="icon" className="size-8">
                             <EllipsisVertical />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>   
-                        <DropdownMenuItem>Editar</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(params.data!)}>
+                            Editar
+                        </DropdownMenuItem>
                         <DropdownMenuItem>Eliminar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -127,6 +138,49 @@ export default function Usuarios() {
             model: "",
             priceRange: "",
         });
+    };
+
+    // Función para abrir el modal de edición
+    const handleEdit = (data: CarData) => {
+        setEditingData(data);
+        setIsEditModalOpen(true);
+    };
+
+    // Función para guardar los cambios
+    const handleSaveEdit = (updatedData: CarData) => {
+        setRowData(prevData => 
+            prevData.map(item => 
+                item.make === editingData?.make && 
+                item.model === editingData?.model && 
+                item.price === editingData?.price 
+                    ? updatedData 
+                    : item
+            )
+        );
+        setIsEditModalOpen(false);
+        setEditingData(null);
+    };
+
+    // Función para cerrar el modal
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false);
+        setEditingData(null);
+    };
+
+    // Función para abrir el modal de creación
+    const handleCreateNew = () => {
+        setIsCreateModalOpen(true);
+    };
+
+    // Función para guardar el nuevo usuario
+    const handleSaveCreate = (newData: CarData) => {
+        setRowData(prevData => [...prevData, newData]);
+        setIsCreateModalOpen(false);
+    };
+
+    // Función para cerrar el modal de creación
+    const handleCloseCreateModal = () => {
+        setIsCreateModalOpen(false);
     };
 
 
@@ -203,7 +257,12 @@ export default function Usuarios() {
                         />
                     </div>
                     <div className="flex justify-end">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">Nuevo usuario</button>
+                        <button 
+                            onClick={handleCreateNew}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                        >
+                            Nuevo usuario
+                        </button>
                     </div>
                 </div>
             </div>
@@ -220,6 +279,21 @@ export default function Usuarios() {
                     quickFilterText={globalFilter}
                 />
             </div>
+
+            {/* Modal de Edición */}
+            <EditUserModal
+                isOpen={isEditModalOpen}
+                onClose={handleCloseEditModal}
+                data={editingData}
+                onSave={handleSaveEdit}
+            />
+
+            {/* Modal de Creación */}
+            <CreateUserModal
+                isOpen={isCreateModalOpen}
+                onClose={handleCloseCreateModal}
+                onSave={handleSaveCreate}
+            />
         </div>
     );
 };
