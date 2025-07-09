@@ -171,21 +171,12 @@ export default function Usuarios() {
         setEditingData(null);
     };
 
-    // Función para abrir el modal de creación
-    const handleCreateNew = () => {
-        setIsCreateModalOpen(true);
-    };
 
     // Función para guardar el nuevo usuario
     const handleSaveCreate = (newData: CarData) => {
         setRowData(prevData => [...prevData, newData]);
-        setIsCreateModalOpen(false);
     };
 
-    // Función para cerrar el modal de creación
-    const handleCloseCreateModal = () => {
-        setIsCreateModalOpen(false);
-    };
 
     // Función para cambiar el tamaño de página
     const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
