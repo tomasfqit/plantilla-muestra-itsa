@@ -90,7 +90,7 @@ export default function Usuarios() {
     // Column Definitions: Defines & controls grid columns.
     const [colDefs] = useState<ColDef<CarData>[]>([
         { field: "make", headerName: "Marca", sortable: true, filter: true },
-        { field: "model", headerName: "Modelo", sortable: true, filter: true },
+        { field: "model", headerName: "Nombre y Apellido / Razón Social", sortable: true, filter: true },
         { field: "price", headerName: "Precio", sortable: true, filter: true },
         { field: "actions", headerName: "Acciones",
             maxWidth: 90,
@@ -202,7 +202,7 @@ export default function Usuarios() {
             {/* Filtro Global */}
 
             {/* Filtros */}
-            <div className="flex flex-col gap-4 bg-gray-200 rounded-lg">
+            <div className="flex flex-col gap-4 bg-gray-200 rounded-lg shrink-0">
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4 p-2 rounded-lg">
                     {/* Marca */}
                     <div className="flex flex-col">
@@ -279,31 +279,8 @@ export default function Usuarios() {
                 </div>
             </div>
           
-            {/* Controles de paginación */}
-            {/* <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                <div className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-gray-700">Mostrar:</label>
-                    <select
-                        value={paginationPageSize}
-                        onChange={handlePageSizeChange}
-                        className="p-1 border border-gray-300 rounded text-sm"
-                    >
-                        <option value={5}>5</option>
-                        <option value={10}>10</option>
-                        <option value={20}>20</option>
-                        <option value={50}>50</option>
-                        <option value={100}>100</option>
-                    </select>
-                    <span className="text-sm text-gray-600">elementos por página</span>
-                </div>
-                
-                <div className="text-sm text-gray-600">
-                    Mostrando <span className="font-medium">{filteredData.length}</span> de <span className="font-medium">{rowData.length}</span> elementos
-                </div>
-            </div> */}
-
             {/* Tabla */}
-            <div className="ag-theme-alpine w-full h-[calc(100vh-400px)] min-h-[400px]">
+            <div className="ag-theme-alpine w-full flex-1 min-h-[300px]">
                 <AgGridReact<CarData>
                     ref={gridRef}
                     rowData={filteredData}
@@ -335,3 +312,28 @@ export default function Usuarios() {
         </div>
     );
 };
+
+
+
+{/* Controles de paginación */ }
+{/* <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700">Mostrar:</label>
+                    <select
+                        value={paginationPageSize}
+                        onChange={handlePageSizeChange}
+                        className="p-1 border border-gray-300 rounded text-sm"
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                    </select>
+                    <span className="text-sm text-gray-600">elementos por página</span>
+                </div>
+                
+                <div className="text-sm text-gray-600">
+                    Mostrando <span className="font-medium">{filteredData.length}</span> de <span className="font-medium">{rowData.length}</span> elementos
+                </div>
+            </div> */}

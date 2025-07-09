@@ -7,6 +7,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
 
 interface CarData {
     make: string;
@@ -66,10 +67,16 @@ export default function CreateUserModal({ isOpen, onClose, onSave }: CreateUserM
     };
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose} >
-            <DialogContent className="w-[90vw] max-w-4xl max-h-[90vh] flex flex-col p-0 border-none">
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            
+            <DialogContent
+                className={cn(
+                    "fixed top-0 right-0 z-50 w-1/2 h-screen max-w-none max-h-none rounded-none border-none bg-background p-6 shadow-lg transform-none transition-all duration-300 data-[state=open]:animate-slide-in-right data-[state=closed]:animate-slide-out-right",
+                    
+                )}
+            >
                 <DialogHeader className="shrink-0 p-6 pb-4">
-                    <DialogTitle>Crear Nuevo Usuario</DialogTitle>
+                    <DialogTitle>Crear Nuevo Vehículo</DialogTitle>
                 </DialogHeader>
                 
                 <form  className="flex-1 overflow-y-auto px-6 space-y-4">

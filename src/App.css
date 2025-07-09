@@ -53,3 +53,7 @@ html, body {
 .read-the-docs {
   color: #888;
 }
+.dialog-content {
+  transition: none !important;
+  animation: none !important;
+}

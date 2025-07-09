@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
@@ -27,7 +27,7 @@ export default function RepuestosModal({ isOpen, onClose, onSelectRepuesto }: Re
     const [loading, setLoading] = useState(false);
 
     // Datos de ejemplo - en un caso real esto vendría de una API
-    const mockRepuestos: Repuesto[] = [
+    const mockRepuestos: Repuesto[] = useMemo(() => [
         {
             id: 1,
             codigo: "R001",
@@ -108,7 +108,7 @@ export default function RepuestosModal({ isOpen, onClose, onSelectRepuesto }: Re
             precio: 65.00,
             stock: 10
         }
-    ];
+    ], []);
 
     useEffect(() => {
         if (isOpen) {
@@ -120,7 +120,7 @@ export default function RepuestosModal({ isOpen, onClose, onSelectRepuesto }: Re
                 setLoading(false);
             }, 500);
         }
-    }, [isOpen]);
+    }, [isOpen, mockRepuestos]);
 
     useEffect(() => {
         const filtered = repuestos.filter(repuesto =>
