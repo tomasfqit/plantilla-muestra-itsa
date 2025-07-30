@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import {
     ChevronDown,
     ChevronRight,
@@ -23,25 +23,41 @@ import {
     User,
     MapPin,
     Bell,
+    BookText,
+    type LucideProps,
 } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { notificacionesData, type Notificacion } from "@/constants"
 import Usuarios from "../Usuarios"
+import Dashboard from "../Dashboard"
+import DesignSystemExamples from "@/components/DesignSystemExamples"
+import UsuariosModal from "../usuarios-modal"
+import DrawerDemo from "@/components/drawer-demo"
 
 interface MenuItem {
     id: string
     title: string
-    icon: React.ComponentType<any>
+    icon: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
     children?: MenuItem[]
 }
 
 const menuData: MenuItem[] = [
     {
-        id: "dashboard",
+        id: "inicio",
         title: "Inicio",
         icon: Home,
     },
+    {
+        id: "drawer-demo",
+        title: "Drawer Demo",
+        icon: Menu
+    },
+    // {
+    //     id: "design-system",
+    //     title: "Sistema de Diseño General",
+    //     icon: TestTube,
+    // },
     {
         id: "dashboard",
         title: "Panel de Control Principal",
@@ -156,8 +172,9 @@ export default function ThreeLevelSidebar() {
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
     const [searchTerm, setSearchTerm] = useState("")
-    const [activeItem, setActiveItem] = useState("Dashboard")
-    const [currentLocation, setCurrentLocation] = useState("Cuenca")
+    const [activeItem, setActiveItem] = useState("Inicio")
+    const [currentLocation, setCurrentLocation] = useState("Cuenca");
+    const [currentModule, setCurrentModule] = useState("Vehículos");
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
@@ -171,7 +188,7 @@ export default function ThreeLevelSidebar() {
         setExpandedItems(newExpanded)
     }
 
-    const filterMenuItems = (items: MenuItem[], searchTerm: string): MenuItem[] => {
+    const filterMenuItems = useCallback((items: MenuItem[], searchTerm: string): MenuItem[] => {
         if (!searchTerm) return items
 
         return items.reduce((filtered: MenuItem[], item) => {
@@ -187,9 +204,9 @@ export default function ThreeLevelSidebar() {
 
             return filtered
         }, [])
-    }
+    }, [])
 
-    const filteredMenuData = useMemo(() => filterMenuItems(menuData, searchTerm), [searchTerm])
+    const filteredMenuData = useMemo(() => filterMenuItems(menuData, searchTerm), [filterMenuItems, searchTerm])
 
     const renderMenuItem = (item: MenuItem, level = 0) => {
         const hasChildren = item.children && item.children.length > 0
@@ -243,47 +260,15 @@ export default function ThreeLevelSidebar() {
     const renderContent = () => {
         switch (activeItem) {
             case "Inicio":
-                return <div className="flex-1 p-6 overflow-y-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Contenido Principal</h2>
-                            <p className="text-gray-600 mb-6">
-                                Este es el área de contenido principal que se adapta automáticamente al ancho disponible cuando el
-                                sidebar se abre o se cierra.
-                            </p>
-                        </div>
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Contenido Principal</h2>
-                            <p className="text-gray-600 mb-6">
-                                Este es el área de contenido principal que se adapta automáticamente al ancho disponible cuando el
-                                sidebar se abre o se cierra.
-                            </p>
-                        </div>
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Contenido Principal</h2>
-                            <p className="text-gray-600 mb-6">
-                                Este es el área de contenido principal que se adapta automáticamente al ancho disponible cuando el
-                                sidebar se abre o se cierra.
-                            </p>
-                        </div>
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Ejemplo numero 1</h2>
-                            <p className="text-gray-600 mb-6">
-                                Crud y tabla, acceder al menu item: <strong>Análisis de Ventas Detallado</strong>
-                            </p>
-                        </div>
-                    </div>
-                   <div className="pt-4">
-                        <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-4">Nota</h2>
-                            <p className="text-gray-600 mb-6">
-                                No tener en cuenta fallos de funcionameinto de la plantilla, solo es un ejemplo de como se puede usar el componente. En todo caso mejor y optimizar el fallo de funcionamiento.
-                            </p>
-                        </div>
-                   </div>
-                </div>
+                return <Dashboard />
             case "Análisis de Ventas Detallado":
                 return <Usuarios />
+            case "Sistema de Diseño General":
+                return <DesignSystemExamples />
+            case "Comportamiento de Usuarios":
+                return <UsuariosModal />
+            case "Drawer Demo":
+                return <DrawerDemo />
             default:
                 return null
         }
@@ -362,23 +347,41 @@ export default function ThreeLevelSidebar() {
                                 >
                                     {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                                 </button>
-                                <h1 className="ml-4 text-xl font-semibold text-white">{activeItem}</h1>
+                               <div className="pl-6">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="outline" className="flex items-center w-[100px] md:w-[200px] gap-2 p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                                <BookText />
+                                                <span className="hidden md:block">{`Modulo - ${currentModule}`}</span>
+                                                <ChevronDown className="w-5 h-5" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem className="w-[200px] cursor-pointer" onClick={() => setCurrentModule("Vehículos")}>
+                                                <span className="text-sm">Vehículos</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="w-[200px] cursor-pointer" onClick={() => setCurrentModule("Clientes")}>
+                                                <span className="text-sm">Clientes</span>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                               </div>
                             </div>
 
                             <div className="flex items-center">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" className="flex items-center gap-2 p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                        <Button variant="outline" className="flex w-[100px] md:w-[200px] items-center gap-2 p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
                                             <MapPin className="w-5 h-5" />
-                                            {`Agencia - ${currentLocation}`}
+                                            <span className="hidden md:block">{`Agencia - ${currentLocation}`}</span>
                                             <ChevronDown className="w-5 h-5" />
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
-                                        <DropdownMenuItem onClick={() => setCurrentLocation("Cuenca")}>
+                                        <DropdownMenuItem className="w-[200px] cursor-pointer" onClick={() => setCurrentLocation("Cuenca")}>
                                             <span className="text-sm">Cuenca</span>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => setCurrentLocation("Quito")}>
+                                        <DropdownMenuItem className="w-[200px] cursor-pointer" onClick={() => setCurrentLocation("Quito")}>
                                             <span className="text-sm">Quito</span>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -390,13 +393,13 @@ export default function ThreeLevelSidebar() {
 
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <button className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
+                                        <button className=" p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200">
                                             <Bell className="w-5 h-5" color="white" />
                                         </button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
                                         {notificacionesData.map((notificacion: Notificacion) => (
-                                            <DropdownMenuItem key={notificacion.id}>
+                                            <DropdownMenuItem className="cursor-pointer" key={notificacion.id}>
                                                 {notificacion.titulo}
                                             </DropdownMenuItem>
                                         ))}
@@ -409,10 +412,10 @@ export default function ThreeLevelSidebar() {
                                         </button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
                                             <span className="text-sm">Configuración</span>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem>
+                                        <DropdownMenuItem className="cursor-pointer">
                                             <span className="text-sm">Cerrar sesión</span>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>

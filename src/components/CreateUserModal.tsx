@@ -97,6 +97,8 @@ export function CreateUserModal({ onSave }: CreateUserModalProps) {
             </Button>
 
             <Modal
+                size="xl"
+                sidebar={true}
                 isOpen={isOpen}
                 onClose={handleCloseModal}
                 title="Nuevo Vehículo"

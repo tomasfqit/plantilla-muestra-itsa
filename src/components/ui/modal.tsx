@@ -14,6 +14,8 @@ interface ModalProps {
     childrenSidebar?: React.ReactNode;
     showCloseButton?: boolean;
     className?: string;
+    size?: "sm" | "md" | "lg" | "xl";
+    sidebar?: boolean;
 }
 
 interface ModalHeaderProps {
@@ -79,7 +81,7 @@ interface ModalSidebarProps {
 
 export function ModalSidebar({ children, className = "" }: ModalSidebarProps) {
     return (
-        <div className={`bg-brand-red w-[150px] flex flex-col gap-2 items-center pt-5 p-2 ${className}`}>
+        <div className={`bg-[#A0090A] w-[150px] flex flex-col gap-2 items-center pt-5 p-2 ${className}`}>
             {children}
         </div>
     )
@@ -93,7 +95,8 @@ export function Modal({
     children,
     childrenSidebar,
     showCloseButton = true,
-    className = ""
+    className = "",
+    size = "sm",
 }: ModalProps) {
     const [mounted, setMounted] = useState(false)
 
@@ -129,21 +132,41 @@ export function Modal({
         };
     }, [isOpen, onClose]);
 
+
     const modal = (
         <>
             {/* Overlay */}
             <div
-                className={`flex flex-row fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"} `}
+                className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
                 onClick={onClose}
                 tabIndex={0}
             />
 
+            {/* Drawer container */}
             <div
-                className={`fixed inset-y-0 right-0 z-50 flex transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}>
-                <div className={`w-screen max-w-full sm:max-w-/3 lg:max-w-/3 xl:max-w-[80vw] bg-white dark:bg-gray-900 shadow-xl flex flex-row h-full ${className} bg-red-500`}>
-                   <ModalSidebar>
-                    {childrenSidebar}
-                   </ModalSidebar>
+                className={`fixed inset-y-0 right-0 z-50 flex transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
+            >
+                {/* Drawer content */}
+                <div
+                    className={`
+    flex flex-row bg-white h-full w-full transition-all
+    ${size === "sm"
+                            ? "max-w-[100vw] min-w-[100vw] md:max-w-[40vw] md:min-w-[40vw]"
+                            : size === "md"
+                                ? "max-w-[100vw] min-w-[100vw] md:max-w-[50vw] md:min-w-[50vw]"
+                                : size === "lg"
+                                    ? "max-w-[100vw] min-w-[100vw] md:max-w-[60vw] md:min-w-[60vw]"
+                                    : size === "xl"
+                                        ? "max-w-[100vw] min-w-[100vw] md:max-w-[75vw] md:min-w-[75vw]"
+                                        : "max-w-[100vw] min-w-[100vw] md:max-w-[75vw] md:min-w-[75vw]"
+                        }
+    ${className}
+  `}
+                >
+                    <ModalSidebar>{childrenSidebar}</ModalSidebar>
+
                     <div className="flex-1 flex flex-col min-h-0">
                         <ModalHeader
                             title={title}
@@ -151,14 +174,14 @@ export function Modal({
                             showCloseButton={showCloseButton}
                             onClose={onClose}
                         />
-                        <div className="flex-1 flex flex-col min-h-0">
-                            {children}
-                        </div>
+                        <div className="flex-1 flex flex-col min-h-0">{children}</div>
                     </div>
                 </div>
+
             </div>
         </>
-    )
+    );
+
 
     if (!mounted) return null
     return createPortal(modal, document.body)

@@ -169,18 +169,15 @@ export default function Usuarios() {
     };
 
     // Función para cerrar el modal
-    const handleCloseEditModal = () => {
+   /* const handleCloseEditModal = () => {
         setIsEditModalOpen(false);
         setEditingData(null);
-    };
-
+    };*/
 
     // Función para guardar el nuevo usuario
     const handleSaveCreate = (newData: CarData) => {
         setRowData(prevData => [...prevData, newData]);
     };
-
-
 
 
     return (
